@@ -1,5 +1,6 @@
 package com.miempresa.serviciowebv4
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -28,19 +29,23 @@ class MainActivity : AppCompatActivity() {
             val usuario = txtUsuario.text.toString()
             val clave = txtClave.text.toString()
             val queue = Volley.newRequestQueue(this)
-            var url = "http://192.168.0.112:3000/usuarios?"
+            var url = getString(R.string.urlAPI)+"/usuarios?"
             url = url + "usuario=" + usuario + "&clave=" + clave
 
             val stringRequest = JsonArrayRequest(url,
                 Response.Listener { response ->
                     try {
                         val valor = response.getJSONObject(0)
+                        /*
                         Toast.makeText(
                             applicationContext,
                             "validacion de usuario: " + valor.getString("usuario")+
                                     " con clave: " + valor.getString("clave")+" correcta",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
+                        val llamaractividad = Intent(applicationContext, Seleccion::class.java)
+                        startActivity(llamaractividad)
+                        finish()
                     } catch (e:JSONException){
                         Toast.makeText(
                             applicationContext,
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun Registrar() {
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.0.112:3000/usuarios"
+        val url = getString(R.string.urlAPI)+"/usuarios"
         val usuario = txtUsuario.text.toString()
         val clave = txtClave.text.toString()
 
@@ -111,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun Verificar(usuario:String, clave: String){
         val queue = Volley.newRequestQueue(this)
-        var url = "http://192.168.0.112:3000/usuarios?"
+        var url = getString(R.string.urlAPI)+"/usuarios?"
         url = url + "usuario=" + usuario + "&clave=" + clave
 
         val stringRequest = JsonArrayRequest(url,
